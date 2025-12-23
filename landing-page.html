@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Play - ระบบจัดการแบบทดสอบออนไลน์แบบ Interactive | ICP Ladda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Poppins', 'Noto Sans Thai', 'sans-serif'],
+                        body: ['Noto Sans Thai', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            DEFAULT: '#004F9F',
+                            50: '#E6F0FA',
+                            100: '#CCE1F5',
+                            200: '#99C3EB',
+                            300: '#66A5E1',
+                            400: '#3387D7',
+                            500: '#004F9F',
+                            600: '#003F7F',
+                            700: '#002F5F',
+                            800: '#001F3F',
+                            900: '#001020',
+                        },
+                        secondary: {
+                            DEFAULT: '#00A651',
+                            light: '#4DC47D',
+                        },
+                        accent: '#F7941D',
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans Thai', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Poppins', 'Noto Sans Thai', sans-serif;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .gradient-primary {
+            background: linear-gradient(135deg, #004F9F 0%, #0066CC 50%, #0080FF 100%);
+        }
+        .gradient-hero {
+            background: linear-gradient(180deg, #004F9F 0%, #003366 100%);
+        }
+        .feature-card {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 79, 159, 0.15);
+        }
+        .step-card {
+            transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        }
+        .step-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(0, 79, 159, 0.15);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .feature-card, .step-card {
+                transition: none;
+            }
+            .feature-card:hover, .step-card:hover {
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50">
+    <!-- Navbar -->
+    <nav class="fixed top-4 left-4 right-4 z-50">
+        <div class="glass-card rounded-2xl px-6 py-4 max-w-6xl mx-auto flex items-center justify-between shadow-lg">
+            <div class="flex items-center gap-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 2a10 10 0 0 1 0 20"/>
+                            <path d="M2 12h20"/>
+                            <path d="M12 2c2.5 2.5 4 6 4 10s-1.5 7.5-4 10"/>
+                        </svg>
+                    </div>
+                    <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4zm-1 14l-3-3 1.41-1.41L11 13.17l4.59-4.58L17 10l-6 6z"/>
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <span class="font-heading font-bold text-xl text-primary">Play</span>
+                    <span class="hidden sm:inline text-xs text-slate-500 ml-2">by ICP Ladda</span>
+                </div>
+            </div>
+            <div class="hidden md:flex items-center gap-6">
+                <a href="#features" class="text-slate-600 hover:text-primary transition-colors cursor-pointer font-medium">ฟีเจอร์</a>
+                <a href="#for-players" class="text-slate-600 hover:text-primary transition-colors cursor-pointer font-medium">สำหรับผู้เล่น</a>
+                <a href="#for-hosts" class="text-slate-600 hover:text-primary transition-colors cursor-pointer font-medium">สำหรับ Host</a>
+                <a href="#faq" class="text-slate-600 hover:text-primary transition-colors cursor-pointer font-medium">FAQ</a>
+            </div>
+            <div class="flex items-center gap-2">
+                <a href="https://play.icpladda.com" target="_blank" class="flex items-center gap-2 bg-secondary hover:bg-green-600 text-white px-5 py-2.5 rounded-xl font-semibold transition-colors cursor-pointer shadow-lg hover:shadow-green-500/30">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    เข้าใช้งาน
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-hero pt-32 pb-24 px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-10 w-64 h-64 bg-white rounded-full blur-3xl"></div>
+            <div class="absolute bottom-20 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+            <div class="text-center mb-12">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
+                    <span class="w-2 h-2 bg-secondary rounded-full"></span>
+                    <span class="text-white/90 text-sm font-medium">ระบบจัดการแบบทดสอบออนไลน์แบบ Interactive</span>
+                </div>
+
+                <h1 class="font-heading text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+                    Play 
+                    <br>
+                    <span class="text-primary-200">
+                        สร้าง จัดการ และเล่นควิซเรียลไทม์
+                    </span>
+                </h1>
+
+                <p class="text-lg md:text-xl text-white/80 mb-10 max-w-3xl mx-auto leading-relaxed">
+                    แพลตฟอร์มควิซเกมแบบ Interactive สำหรับทั้ง <strong class="text-white">Host</strong> ที่ต้องการสร้างและจัดการแบบทดสอบ
+                    และ <strong class="text-white">ผู้เล่น</strong> ที่ต้องการเข้าร่วมเกมแข่งขันแบบเรียลไทม์ พร้อม AI สร้างคำถามอัตโนมัติ
+                </p>
+
+                <!-- Main CTA Button -->
+                <div class="mb-8">
+                    <a href="https://play.icpladda.com" target="_blank" class="group cursor-pointer inline-flex items-center gap-3 bg-gradient-to-r from-secondary to-green-400 text-white font-bold text-xl px-10 py-5 rounded-2xl hover:from-green-400 hover:to-secondary transition-all shadow-2xl hover:shadow-green-500/30 hover:scale-105 transform animate-pulse hover:animate-none">
+                        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        เข้าใช้งานระบบ Play
+                        <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                        </svg>
+                    </a>
+                    <p class="text-white/70 text-sm mt-3">play.icpladda.com</p>
+                </div>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#for-hosts" class="cursor-pointer bg-white text-primary font-semibold px-8 py-4 rounded-2xl hover:bg-slate-50 transition-colors shadow-lg hover:shadow-xl flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        สำหรับ Host
+                    </a>
+                    <a href="#for-players" class="cursor-pointer text-white border-2 border-white/30 px-8 py-4 rounded-2xl hover:bg-white/10 transition-colors flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        ดูวิธีเล่น
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quiz Preview Card -->
+            <div class="mt-12 relative">
+                <div class="glass-card rounded-3xl p-6 md:p-8 max-w-4xl mx-auto shadow-2xl">
+                    <div class="bg-gradient-to-br from-primary-50 to-slate-50 rounded-2xl p-6 md:p-8">
+                        <div class="flex items-center justify-between mb-6">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
+                                    <span class="text-white font-bold">Q1</span>
+                                </div>
+                                <span class="text-slate-600 font-medium">คำถามที่ 1 จาก 10</span>
+                            </div>
+                            <div class="bg-accent/10 text-accent px-4 py-2 rounded-full font-semibold flex items-center gap-2">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                15 วินาที
+                            </div>
+                        </div>
+                        <h3 class="text-xl md:text-2xl font-bold text-slate-800 mb-8 text-center">
+                            เมืองหลวงของประเทศไทยคือเมืองใด?
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-red-500 hover:bg-red-600 text-white p-4 rounded-xl cursor-pointer transition-colors text-center font-semibold">
+                                กรุงเทพมหานคร
+                            </div>
+                            <div class="bg-primary hover:bg-primary-600 text-white p-4 rounded-xl cursor-pointer transition-colors text-center font-semibold">
+                                เชียงใหม่
+                            </div>
+                            <div class="bg-amber-500 hover:bg-amber-600 text-white p-4 rounded-xl cursor-pointer transition-colors text-center font-semibold">
+                                ภูเก็ต
+                            </div>
+                            <div class="bg-secondary hover:bg-secondary-light text-white p-4 rounded-xl cursor-pointer transition-colors text-center font-semibold">
+                                ขอนแก่น
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-primary-50 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">ฟีเจอร์</span>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    ฟีเจอร์เด่นของระบบ
+                </h2>
+                <p class="text-slate-600 text-lg max-w-2xl mx-auto">ทุกสิ่งที่คุณต้องการสำหรับประสบการณ์เกมควิซที่สมบูรณ์แบบ</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Feature 1: QR Code -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">เข้าเกมง่ายด้วย QR Code</h3>
+                    <p class="text-slate-600">สแกน QR Code หรือใส่ Game PIN 6 หลัก เข้าร่วมเกมได้ทันที ไม่ต้องสมัครสมาชิก</p>
+                </div>
+
+                <!-- Feature 2: AI Generator -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-purple-500 rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">AI สร้างคำถามอัตโนมัติ</h3>
+                    <p class="text-slate-600">ใส่หัวข้อ เลือกระดับความยาก (Easy/Medium/Hard) และภาษา AI จะสร้างคำถามให้ภายใน 10-30 วินาที</p>
+                </div>
+
+                <!-- Feature 3: Speed Score -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-accent rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">ระบบคะแนนตามความเร็ว</h3>
+                    <p class="text-slate-600">คะแนน = คะแนนพื้นฐาน (100-5000) x (เวลาที่เหลือ / เวลาทั้งหมด) ยิ่งตอบเร็ว ยิ่งได้คะแนนเยอะ!</p>
+                </div>
+
+                <!-- Feature 4: Leaderboard -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-secondary rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">Leaderboard เรียลไทม์</h3>
+                    <p class="text-slate-600">อัพเดทอันดับอัตโนมัติหลังทุกคำถาม ผู้เล่น Top 3 จะมีเอฟเฟกต์พิเศษและเหรียญรางวัล</p>
+                </div>
+
+                <!-- Feature 5: Team Mode -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-primary-400 rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">โหมดทีม (Team Mode)</h3>
+                    <p class="text-slate-600">เล่นเป็นทีม 2-4 ทีม คะแนนรวมเป็นคะแนนทีม แสดง Team Leaderboard</p>
+                </div>
+
+                <!-- Feature 6: Self-Paced -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-cyan-500 rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">โหมด Self-Paced</h3>
+                    <p class="text-slate-600">เล่นคนเดียวได้ตลอดเวลา ไม่ต้องรอ Host เหมาะสำหรับการทบทวน ฝึกฝน และอบรมพนักงาน</p>
+                </div>
+
+                <!-- Feature 7: Certificate -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">ใบประกาศนียบัตร</h3>
+                    <p class="text-slate-600">ผ่านเกณฑ์คะแนน (Passing Score) รับใบประกาศนียบัตรพร้อมดาวน์โหลดเป็นรูปภาพ</p>
+                </div>
+
+                <!-- Feature 8: Analytics -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-indigo-500 rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">Analytics และรายงาน</h3>
+                    <p class="text-slate-600">ดูสถิติ Total Games, Total Players, Average Score และ Export เป็น CSV/Excel ได้</p>
+                </div>
+
+                <!-- Feature 9: Themes -->
+                <div class="feature-card bg-slate-50 rounded-2xl p-6 cursor-pointer border border-slate-100">
+                    <div class="w-14 h-14 bg-pink-500 rounded-2xl flex items-center justify-center mb-4">
+                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">ธีมสีหลากหลาย</h3>
+                    <p class="text-slate-600">เลือกธีมได้หลายแบบ: Classic, Neon, Dark, Nature, Ocean และอื่นๆ อีกมากมาย</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Players Section -->
+    <section id="for-players" class="py-20 px-4 bg-slate-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-secondary/10 text-secondary px-4 py-2 rounded-full text-sm font-medium mb-4">สำหรับผู้เล่น</span>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    วิธีเข้าร่วมเกม
+                </h2>
+                <p class="text-slate-600 text-lg">เพียง 3 วิธีง่ายๆ ก็เข้าร่วมเกมได้เลย!</p>
+            </div>
+
+            <!-- Waiting for Players Screenshot -->
+            <div class="mb-12">
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-3xl mx-auto">
+                    <img src="waitingforplayer.png" alt="หน้ารอผู้เล่น - Scan QR Code" class="w-full h-auto">
+                </div>
+                <p class="text-center text-slate-500 text-sm mt-4">หน้าจอ Host รอผู้เล่น - สแกน QR Code หรือไปที่ play.icpladda.com แล้วใส่ Game PIN</p>
+            </div>
+
+            <!-- 3 Ways to Join -->
+            <div class="grid md:grid-cols-3 gap-6 mb-16">
+                <!-- Way 1 -->
+                <div class="step-card bg-white rounded-2xl p-6 text-center cursor-pointer border border-slate-100">
+                    <div class="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">วิธีที่ 1: สแกน QR Code</h3>
+                    <p class="text-slate-600">เปิดกล้องมือถือ สแกน QR Code ที่แสดงบนหน้าจอ Host แล้วเปิดลิงก์ที่ปรากฏ</p>
+                </div>
+
+                <!-- Way 2 -->
+                <div class="step-card bg-white rounded-2xl p-6 text-center cursor-pointer border border-slate-100">
+                    <div class="w-16 h-16 bg-primary-400 rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">วิธีที่ 2: พิมพ์ URL</h3>
+                    <p class="text-slate-600">เปิด Browser พิมพ์ URL: play.icpladda.com/game/[GAME_PIN] แทนที่ด้วยรหัสเกม 6 หลัก</p>
+                </div>
+
+                <!-- Way 3 -->
+                <div class="step-card bg-white rounded-2xl p-6 text-center cursor-pointer border border-slate-100">
+                    <div class="w-16 h-16 bg-secondary rounded-2xl flex items-center justify-center mb-4 mx-auto">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+                        </svg>
+                    </div>
+                    <h3 class="font-heading text-xl font-bold text-slate-800 mb-2">วิธีที่ 3: จากหน้าแรก</h3>
+                    <p class="text-slate-600">ไปที่หน้าแรกของเว็บ คลิก "Join Game" แล้วใส่ Game PIN 6 หลัก</p>
+                </div>
+            </div>
+
+            <!-- Registration Steps -->
+            <div class="bg-white rounded-3xl p-8 shadow-lg">
+                <h3 class="font-heading text-2xl font-bold text-slate-800 mb-6 text-center">ขั้นตอนการลงทะเบียน</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Step 1 -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="font-heading text-xl font-bold text-primary">1</span>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">ใส่ชื่อเล่น</h4>
+                        <p class="text-slate-600 text-sm">พิมพ์ชื่อที่ต้องการ (สูงสุด 20 ตัวอักษร) ชื่อจะแสดงบน Leaderboard</p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="font-heading text-xl font-bold text-primary">2</span>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">เลือก Avatar</h4>
+                        <p class="text-slate-600 text-sm">คลิกที่รูป Avatar ที่ชอบ มีให้เลือกมากกว่า 12 แบบ</p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="font-heading text-xl font-bold text-primary">3</span>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">เลือกทีม (ถ้ามี)</h4>
+                        <p class="text-slate-600 text-sm">ถ้าเปิด Team Mode ระบบจะแสดงตัวเลือกทีมให้เลือก</p>
+                    </div>
+                    <!-- Step 4 -->
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-primary-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="font-heading text-xl font-bold text-primary">4</span>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">รอ Host เริ่มเกม</h4>
+                        <p class="text-slate-600 text-sm">คลิก "Join Game" แล้วรอ Host กดเริ่มเกม สามารถส่ง Emoji Reactions ได้</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- How to Answer -->
+            <div class="mt-12 bg-white rounded-3xl p-8 shadow-lg">
+                <h3 class="font-heading text-2xl font-bold text-slate-800 mb-6 text-center">วิธีตอบคำถาม</h3>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">อ่านคำถาม</h4>
+                        <p class="text-slate-600 text-sm">รอตัวเลือกปรากฏ (หน่วง 3 วินาทีเพื่อให้อ่านคำถาม)</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-accent rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">เลือกคำตอบ</h4>
+                        <p class="text-slate-600 text-sm">คลิกที่ตัวเลือกที่คิดว่าถูกต้อง ยิ่งตอบเร็ว ยิ่งได้คะแนนมาก</p>
+                    </div>
+                    <div class="text-center p-4">
+                        <div class="w-14 h-14 bg-secondary rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 mb-2">ดูผลลัพธ์</h4>
+                        <p class="text-slate-600 text-sm">Correct! = ตอบถูก (ได้คะแนน), Wrong = ตอบผิด (แสดงคำตอบที่ถูก)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Hosts Section -->
+    <section id="for-hosts" class="py-20 px-4 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="inline-block bg-primary-50 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">สำหรับ Host</span>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    สร้างและจัดการ Quiz
+                </h2>
+                <p class="text-slate-600 text-lg">เข้าสู่ระบบด้วย Microsoft หรือ Email เพื่อเริ่มสร้าง Quiz</p>
+            </div>
+
+            <!-- Login Screenshot -->
+            <div class="mb-12">
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden max-w-2xl mx-auto">
+                    <img src="login.png" alt="หน้า Login - ICPG Quiz" class="w-full h-auto">
+                </div>
+                <p class="text-center text-slate-500 text-sm mt-4">หน้าเข้าสู่ระบบ - เลือก "เข้าสู่ระบบด้วย Microsoft" หรือ "เข้าร่วมเกมในฐานะผู้เล่น"</p>
+            </div>
+
+            <!-- Login Options -->
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-blue-600 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M11.4 24H0V12.6h11.4V24zM24 24H12.6V12.6H24V24zM11.4 11.4H0V0h11.4v11.4zm12.6 0H12.6V0H24v11.4z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-xl font-bold text-slate-800">Sign in with Microsoft</h3>
+                            <p class="text-slate-600 text-sm">(แนะนำ)</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 mb-4">เข้าสู่ระบบด้วยบัญชี Microsoft ของคุณ ระบบจะนำคุณไปยังหน้า Dashboard โดยอัตโนมัติ</p>
+                </div>
+                <div class="bg-slate-50 rounded-2xl p-8 border border-slate-100">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-14 h-14 bg-slate-700 rounded-2xl flex items-center justify-center">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-heading text-xl font-bold text-slate-800">สมัครด้วย Email</h3>
+                        </div>
+                    </div>
+                    <p class="text-slate-600 mb-4">กรอก Full Name, Email, Password (อย่างน้อย 6 ตัวอักษร) และ Confirm Password</p>
+                </div>
+            </div>
+
+            <!-- Dashboard Features -->
+            <div class="bg-gradient-to-br from-primary-50 to-slate-50 rounded-3xl p-8">
+                <h3 class="font-heading text-2xl font-bold text-slate-800 mb-8 text-center">หน้า Dashboard - ศูนย์กลางการจัดการ</h3>
+
+                <!-- Dashboard Screenshot -->
+                <div class="mb-8">
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                        <img src="dashboard.png" alt="หน้า Dashboard - ICPG Quiz" class="w-full h-auto">
+                    </div>
+                    <p class="text-center text-slate-500 text-sm mt-4">หน้า Dashboard แสดง Quiz ทั้งหมดของคุณ พร้อมปุ่ม เล่น, แก้ไข, ดูรายงาน และลบ</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div class="bg-white rounded-xl p-4 text-center shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 text-sm">My Quizzes</h4>
+                        <p class="text-slate-500 text-xs">ดู Quiz ทั้งหมด</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 text-center shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 bg-secondary rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 text-sm">Create New</h4>
+                        <p class="text-slate-500 text-xs">สร้าง Quiz ใหม่</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 text-center shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 bg-indigo-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 text-sm">Analytics</h4>
+                        <p class="text-slate-500 text-xs">ดูสถิติและรายงาน</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 text-center shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 bg-accent rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 text-sm">How to</h4>
+                        <p class="text-slate-500 text-xs">คำแนะนำการใช้งาน</p>
+                    </div>
+                    <div class="bg-white rounded-xl p-4 text-center shadow-sm cursor-pointer hover:shadow-md transition-shadow">
+                        <div class="w-10 h-10 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-slate-800 text-sm">Enterprise</h4>
+                        <p class="text-slate-500 text-xs">ฟีเจอร์สำหรับองค์กร</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Settings with Screenshots -->
+            <div class="mt-12">
+                <h3 class="font-heading text-2xl font-bold text-slate-800 mb-8 text-center">สร้าง Quiz ใหม่</h3>
+
+                <!-- Screenshots Grid -->
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <!-- Create Quiz Screenshot -->
+                    <div>
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <img src="createquiz.png" alt="หน้าสร้าง Quiz - ICPG Quiz" class="w-full h-auto">
+                        </div>
+                        <p class="text-center text-slate-500 text-sm mt-4">หน้าสร้าง Quiz ใหม่ - ใส่ชื่อ, คำอธิบาย, เลือกธีม และตั้งค่าต่างๆ</p>
+                    </div>
+
+                    <!-- AI Generator Screenshot -->
+                    <div>
+                        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+                            <img src="aiquizgenerator.png" alt="AI Quiz Generator - ICPG Quiz" class="w-full h-auto">
+                        </div>
+                        <p class="text-center text-slate-500 text-sm mt-4">AI Quiz Generator - ใส่หัวข้อ, จำนวนคำถาม, ระดับความยาก แล้วกด "สร้างควิซด้วย AI"</p>
+                    </div>
+                </div>
+
+                <!-- Settings Details -->
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="bg-slate-50 rounded-2xl p-8">
+                        <h3 class="font-heading text-xl font-bold text-slate-800 mb-6">การตั้งค่าเกม</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Auto-advance Time</span>
+                                <span class="text-slate-500 text-sm">3-30 วินาที</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Time Limit ต่อคำถาม</span>
+                                <span class="text-slate-500 text-sm">5-60 วินาที</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">คะแนนต่อคำถาม</span>
+                                <span class="text-slate-500 text-sm">100-5000 คะแนน</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Team Mode</span>
+                                <span class="text-slate-500 text-sm">2-4 ทีม</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Self-paced Mode</span>
+                                <span class="text-slate-500 text-sm">เปิด/ปิด</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-slate-700">Passing Score</span>
+                                <span class="text-slate-500 text-sm">0-100%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-slate-50 rounded-2xl p-8">
+                        <h3 class="font-heading text-xl font-bold text-slate-800 mb-6">AI Quiz Generator</h3>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Topic</span>
+                                <span class="text-slate-500 text-sm">หัวข้อที่ต้องการ</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Number of Questions</span>
+                                <span class="text-slate-500 text-sm">จำนวนคำถาม</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Difficulty</span>
+                                <span class="text-slate-500 text-sm">Easy / Medium / Hard</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2 border-b border-slate-200">
+                                <span class="text-slate-700">Language</span>
+                                <span class="text-slate-500 text-sm">Thai / English</span>
+                            </div>
+                            <div class="flex justify-between items-center py-2">
+                                <span class="text-slate-700">เวลาประมวลผล</span>
+                                <span class="text-slate-500 text-sm">10-30 วินาที</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section id="tips" class="py-20 px-4 bg-slate-50">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-accent/10 text-accent px-4 py-2 rounded-full text-sm font-medium mb-4">เคล็ดลับ</span>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    เคล็ดลับการเล่น
+                </h2>
+                <p class="text-slate-600">ทำตามนี้เพื่อได้คะแนนสูงสุด!</p>
+            </div>
+
+            <div class="space-y-4">
+                <div class="flex items-start gap-4 p-5 bg-white rounded-xl cursor-pointer hover:shadow-md transition-shadow border border-slate-100">
+                    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-1 text-lg">ตอบเร็ว = คะแนนเยอะ (Time Bonus)</h4>
+                        <p class="text-slate-600">ระบบคิดคะแนนตามความเร็ว: คะแนน x (เวลาที่เหลือ / เวลาทั้งหมด) ยิ่งตอบเร็ว ยิ่งได้คะแนนมาก แต่ต้องตอบถูกด้วยนะ!</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-5 bg-white rounded-xl cursor-pointer hover:shadow-md transition-shadow border border-slate-100">
+                    <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-1 text-lg">อ่านคำถามให้เข้าใจก่อนตอบ</h4>
+                        <p class="text-slate-600">รอตัวเลือกปรากฏ (หน่วง 3 วินาที) เพื่อให้อ่านคำถามก่อน เพราะตอบผิดจะไม่ได้คะแนน</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-5 bg-white rounded-xl cursor-pointer hover:shadow-md transition-shadow border border-slate-100">
+                    <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-1 text-lg">ใช้มือถือเล่นสะดวกกว่า</h4>
+                        <p class="text-slate-600">หน้าจอมือถือออกแบบมาให้กดตอบได้ง่าย เร็ว และสะดวกที่สุด รองรับ Responsive Design ทั้ง Desktop และ Mobile</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-5 bg-white rounded-xl cursor-pointer hover:shadow-md transition-shadow border border-slate-100">
+                    <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h4 class="font-semibold text-slate-800 mb-1 text-lg">ตรวจสอบสัญญาณอินเทอร์เน็ต</h4>
+                        <p class="text-slate-600">เกมทำงานแบบเรียลไทม์ ควรมีสัญญาณอินเทอร์เน็ตที่เสถียรเพื่อไม่พลาดคำถาม ถ้า refresh หน้าระบบจะจำข้อมูลและนำกลับเข้าเกมอัตโนมัติ</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 px-4 bg-white">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="inline-block bg-primary-50 text-primary px-4 py-2 rounded-full text-sm font-medium mb-4">FAQ</span>
+                <h2 class="font-heading text-3xl md:text-4xl font-bold text-slate-800 mb-4">
+                    คำถามที่พบบ่อย
+                </h2>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-semibold text-slate-800 mb-2">Q: ผู้เล่นสูงสุดต่อเกมมีกี่คน?</h4>
+                    <p class="text-slate-600">A: ไม่จำกัดจำนวน ขึ้นอยู่กับ capacity ของเซิร์ฟเวอร์</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-semibold text-slate-800 mb-2">Q: Quiz หนึ่งมีคำถามได้กี่ข้อ?</h4>
+                    <p class="text-slate-600">A: ไม่จำกัด แต่แนะนำ 10-30 ข้อเพื่อประสบการณ์ที่ดี</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-semibold text-slate-800 mb-2">Q: ถ้าผู้เล่น refresh หน้าจะเกิดอะไรขึ้น?</h4>
+                    <p class="text-slate-600">A: ระบบจะจำข้อมูลผู้เล่นและนำกลับเข้าเกมอัตโนมัติ</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-semibold text-slate-800 mb-2">Q: Team Mode ทำงานอย่างไร?</h4>
+                    <p class="text-slate-600">A: ผู้เล่นเลือกทีม (2-4 ทีม) คะแนนจะรวมเป็นคะแนนทีม แสดง Team Leaderboard</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-semibold text-slate-800 mb-2">Q: เสียงไม่ดังเกิดจากอะไร?</h4>
+                    <p class="text-slate-600">A: Browser ต้องการให้ผู้ใช้คลิกบนหน้าก่อนเล่นเสียง ลองคลิกที่หน้าจอ</p>
+                </div>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h4 class="font-semibold text-slate-800 mb-2">Q: AI สร้างคำถามได้ภาษาไทยไหม?</h4>
+                    <p class="text-slate-600">A: ได้ เลือก Language เป็น Thai ในหน้า AI Generator</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4 gradient-primary">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="font-heading text-3xl md:text-4xl font-bold text-white mb-6">
+                พร้อมเริ่มใช้งานหรือยัง?
+            </h2>
+            <p class="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
+                คลิกปุ่มด้านล่างเพื่อเข้าสู่ระบบ Play ได้ทันที
+            </p>
+
+            <!-- Main CTA Button -->
+            <div class="mb-8">
+                <a href="https://play.icpladda.com" target="_blank" class="group cursor-pointer inline-flex items-center gap-3 bg-white text-primary font-bold text-xl px-10 py-5 rounded-2xl hover:bg-slate-50 transition-all shadow-2xl hover:shadow-white/30 hover:scale-105 transform">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    เข้าใช้งานระบบ Play
+                    <svg class="w-6 h-6 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+                    </svg>
+                </a>
+                <p class="text-white/70 text-sm mt-3">play.icpladda.com</p>
+            </div>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#for-hosts" class="cursor-pointer bg-white/20 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-white/30 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                    </svg>
+                    วิธีสร้าง Quiz
+                </a>
+                <a href="#for-players" class="cursor-pointer bg-white/20 text-white font-semibold px-8 py-4 rounded-2xl hover:bg-white/30 transition-colors flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    วิธีเข้าร่วมเกม
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-4 bg-slate-900">
+        <div class="max-w-6xl mx-auto">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-3">
+                    <div class="flex items-center gap-2">
+                        <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 2a10 10 0 0 1 0 20"/>
+                                <path d="M2 12h20"/>
+                                <path d="M12 2c2.5 2.5 4 6 4 10s-1.5 7.5-4 10"/>
+                            </svg>
+                        </div>
+                        <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center">
+                            <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4zm-1 14l-3-3 1.41-1.41L11 13.17l4.59-4.58L17 10l-6 6z"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <span class="font-heading font-bold text-xl text-white">Play</span>
+                    </div>
+                </div>
+
+                <div class="text-center md:text-right">
+                    <p class="text-slate-400 text-sm">
+                        พัฒนาโดย ICP Ladda Co., Ltd.
+                    </p>
+                    <p class="text-slate-500 text-xs mt-1">
+                        ระบบจัดการแบบทดสอบออนไลน์แบบ Interactive
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 mt-8 pt-8">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <p class="text-slate-500 text-sm">
+                        &copy; 2024 ICP Ladda Co., Ltd. All rights reserved.
+                    </p>
+                    <p class="text-slate-500 text-sm">
+                        ติดต่อผู้ดูแลระบบ หรือดูคู่มือเพิ่มเติมที่ /host/dashboard/how-to
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Smooth Scroll Script -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
